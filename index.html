@@ -5,15 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Respiración Guiada</title>
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-K0B7PL443N"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-K0B7PL443N');
-    </script>
-
     <style>
         body {
             background-color: #f0f8ff;
@@ -26,7 +17,7 @@
             width: 220px;
             max-width: 80%;
             display: block;
-            margin: 80px auto 20px auto;
+            margin: 40px auto 20px auto;
         }
 
         #texto {
@@ -41,10 +32,16 @@
             color: #555;
         }
 
-        #boton {
+        #botones {
             position: fixed;
-            top: 20px;
-            right: 20px;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
             padding: 12px 20px;
             font-size: 1.1rem;
             background-color: #4CAF50;
@@ -52,10 +49,9 @@
             border: none;
             border-radius: 10px;
             cursor: pointer;
-            z-index: 9999;
         }
 
-        #boton:hover {
+        .btn:hover {
             background-color: #45a049;
         }
 
@@ -83,14 +79,17 @@
 
     <img id="imagen" src="meditar.jpg" alt="Imagen relajante">
 
-    <button id="boton" onclick="iniciar()">Iniciar respiración</button>
-
     <div id="barra-contenedor">
         <div id="barra"></div>
     </div>
 
-    <div id="texto">Pulsa el botón para comenzar</div>
+    <div id="texto">Pulsa iniciar para comenzar</div>
     <div id="contador">Ciclos completados: 0</div>
+
+    <div id="botones">
+        <button class="btn" onclick="iniciar()">Iniciar</button>
+        <button class="btn" onclick="pausar()">Pausa</button>
+    </div>
 
     <script>
         const texto = document.getElementById("texto");
@@ -105,18 +104,36 @@
         let colores = ["#4CAF50", "#2196F3", "#FF9800", "#9C27B0"];
         let indice = 0;
         let activo = false;
+        let pausado = false;
         let ciclosCompletados = 0;
+        let timeoutPaso;
 
         function iniciar() {
             if (activo) return;
             activo = true;
-
+            pausado = false;
             sonido.play();
-
             siguientePaso();
         }
 
+        function pausar() {
+            if (!activo) return;
+
+            if (!pausado) {
+                pausado = true;
+                sonido.pause();
+                texto.textContent = "Pausado";
+                clearTimeout(timeoutPaso);
+            } else {
+                pausado = false;
+                sonido.play();
+                siguientePaso();
+            }
+        }
+
         function siguientePaso() {
+            if (pausado) return;
+
             texto.textContent = ciclo[indice];
             barra.style.backgroundColor = colores[indice];
             barra.style.width = "0%";
@@ -125,6 +142,7 @@
             let inicio = Date.now();
 
             function animar() {
+                if (pausado) return;
                 let progreso = (Date.now() - inicio) / duracion;
                 if (progreso > 1) progreso = 1;
                 barra.style.width = (progreso * 100) + "%";
@@ -133,7 +151,7 @@
 
             animar();
 
-            setTimeout(() => {
+            timeoutPaso = setTimeout(() => {
                 indice = (indice + 1) % ciclo.length;
 
                 if (indice === 0) {
@@ -148,4 +166,3 @@
 
 </body>
 </html>
-
