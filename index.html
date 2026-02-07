@@ -39,6 +39,7 @@
             transform: translateX(-50%);
             display: flex;
             gap: 15px;
+            flex-direction: column;
         }
 
         .btn {
@@ -89,6 +90,11 @@
     <div id="botones">
         <button class="btn" onclick="iniciar()">Iniciar</button>
         <button class="btn" onclick="pausar()">Pausa</button>
+
+        <!-- BOTÓN NUEVO AÑADIDO -->
+        <button class="btn" onclick="window.location.href='explicacion_box.html'">
+            Explicación
+        </button>
     </div>
 
     <script>
@@ -166,3 +172,4 @@
 
 </body>
 </html>
+
