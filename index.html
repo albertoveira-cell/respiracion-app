@@ -3,176 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Respiración Guiada</title>
+    <title>Explicación – Respiración Cuadrada</title>
 
     <style>
         body {
             background-color: #f0f8ff;
             font-family: Arial, sans-serif;
-            text-align: center;
             padding: 20px;
-        }
-
-        #imagen {
-            width: 220px;
-            max-width: 80%;
-            display: block;
-            margin: 40px auto 20px auto;
-        }
-
-        #texto {
-            font-size: 2rem;
-            margin-top: 20px;
+            line-height: 1.6;
             color: #333;
+            max-width: 800px;
+            margin: auto;
         }
 
-        #contador {
-            font-size: 1.2rem;
-            margin-top: 10px;
-            color: #555;
-        }
-
-        /* BOTONES EN HORIZONTAL */
-        #botones {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 15px;
-            flex-direction: row;      /* ← HORIZONTAL */
-            justify-content: center;  /* ← CENTRADOS */
+        h1 {
+            text-align: center;
+            color: #2c3e50;
         }
 
         .btn {
-            padding: 12px 20px;
-            font-size: 1.1rem;
+            display: block;
+            width: 200px;
+            margin: 30px auto;
+            padding: 12px;
             background-color: #4CAF50;
             color: white;
-            border: none;
+            text-align: center;
             border-radius: 10px;
-            cursor: pointer;
+            text-decoration: none;
+            font-size: 1.1rem;
         }
 
         .btn:hover {
             background-color: #45a049;
-        }
-
-        #barra-contenedor {
-            width: 80%;
-            height: 20px;
-            background-color: #ddd;
-            border-radius: 10px;
-            margin: 20px auto;
-            overflow: hidden;
-        }
-
-        #barra {
-            height: 100%;
-            width: 0%;
-            background-color: green;
-            transition: width 0.1s linear;
         }
     </style>
 </head>
 
 <body>
 
-    <h1>Respiración Guiada</h1>
+    <h1>Respiración Cuadrada</h1>
 
-    <img id="imagen" src="meditar.jpg" alt="Imagen relajante">
+    <p>
+        La <strong>respiración cuadrada</strong>, también conocida como <em>box breathing</em>, es una técnica muy utilizada
+        en entrenamiento militar, psicología clínica y mindfulness. Su nombre proviene de que todas las fases
+        de la respiración duran lo mismo: inhalar, mantener, exhalar y mantener.
+    </p>
 
-    <div id="barra-contenedor">
-        <div id="barra"></div>
-    </div>
+    <h2>¿Para qué sirve?</h2>
+    <p>
+        Este modo es especialmente útil para:
+    </p>
+    <ul>
+        <li>Reducir el estrés en pocos minutos</li>
+        <li>Bajar la frecuencia cardíaca</li>
+        <li>Recuperar el control en momentos de ansiedad</li>
+        <li>Mejorar la concentración</li>
+        <li>Regular el sistema nervioso autónomo</li>
+    </ul>
 
-    <div id="texto">Pulsa iniciar para comenzar</div>
-    <div id="contador">Ciclos completados: 0</div>
+    <h2>Cuándo usarla</h2>
+    <p>
+        La respiración cuadrada funciona muy bien en situaciones como:
+    </p>
+    <ul>
+        <li>Antes de una reunión, examen o conversación importante</li>
+        <li>Cuando notas tensión o nerviosismo</li>
+        <li>Para “resetear” la mente durante el día</li>
+        <li>Antes de dormir si estás acelerado</li>
+        <li>Para mejorar la atención en el trabajo o estudio</li>
+    </ul>
 
-    <div id="botones">
-        <button class="btn" onclick="iniciar()">Iniciar</button>
-        <button class="btn" onclick="pausar()">Pausa</button>
+    <h2>Beneficios</h2>
+    <ul>
+        <li>Activa el sistema parasimpático (relajación)</li>
+        <li>Reduce el cortisol</li>
+        <li>Mejora la claridad mental</li>
+        <li>Aumenta la tolerancia al estrés</li>
+        <li>Estabiliza la respiración y el ritmo cardíaco</li>
+    </ul>
 
-        <!-- BOTÓN NUEVO -->
-        <button class="btn" onclick="window.location.href='explicacion_box.html'">
-            Explicación
-        </button>
-    </div>
+    <h2>Precauciones</h2>
+    <ul>
+        <li>No fuerces la retención si te incomoda</li>
+        <li>Si te mareas, vuelve a una respiración normal</li>
+        <li>No es recomendable para personas con problemas respiratorios sin supervisión</li>
+    </ul>
 
-    <script>
-        const texto = document.getElementById("texto");
-        const barra = document.getElementById("barra");
-        const contador = document.getElementById("contador");
-
-        const sonido = new Audio("audio/528hz.mp3");
-        sonido.loop = true;
-
-        let ciclo = ["Inhala", "Mantén", "Exhala", "Mantén"];
-        let tiempos = [4000, 4000, 4000, 4000];
-        let colores = ["#4CAF50", "#2196F3", "#FF9800", "#9C27B0"];
-        let indice = 0;
-        let activo = false;
-        let pausado = false;
-        let ciclosCompletados = 0;
-        let timeoutPaso;
-
-        function iniciar() {
-            if (activo) return;
-            activo = true;
-            pausado = false;
-            sonido.play();
-            siguientePaso();
-        }
-
-        function pausar() {
-            if (!activo) return;
-
-            if (!pausado) {
-                pausado = true;
-                sonido.pause();
-                texto.textContent = "Pausado";
-                clearTimeout(timeoutPaso);
-            } else {
-                pausado = false;
-                sonido.play();
-                siguientePaso();
-            }
-        }
-
-        function siguientePaso() {
-            if (pausado) return;
-
-            texto.textContent = ciclo[indice];
-            barra.style.backgroundColor = colores[indice];
-            barra.style.width = "0%";
-
-            let duracion = tiempos[indice];
-            let inicio = Date.now();
-
-            function animar() {
-                if (pausado) return;
-                let progreso = (Date.now() - inicio) / duracion;
-                if (progreso > 1) progreso = 1;
-                barra.style.width = (progreso * 100) + "%";
-                if (progreso < 1) requestAnimationFrame(animar);
-            }
-
-            animar();
-
-            timeoutPaso = setTimeout(() => {
-                indice = (indice + 1) % ciclo.length;
-
-                if (indice === 0) {
-                    ciclosCompletados++;
-                    contador.textContent = "Ciclos completados: " + ciclosCompletados;
-                }
-
-                siguientePaso();
-            }, duracion);
-        }
-    </script>
+    <!-- BOTÓN CORREGIDO -->
+    <a href="index.html" class="btn">Volver al modo</a>
 
 </body>
 </html>
+
 
 
