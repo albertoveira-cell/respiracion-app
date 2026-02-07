@@ -32,6 +32,7 @@
             color: #555;
         }
 
+        /* BOTONES EN HORIZONTAL */
         #botones {
             position: fixed;
             bottom: 20px;
@@ -39,7 +40,8 @@
             transform: translateX(-50%);
             display: flex;
             gap: 15px;
-            flex-direction: column;
+            flex-direction: row;      /* ← HORIZONTAL */
+            justify-content: center;  /* ← CENTRADOS */
         }
 
         .btn {
@@ -91,7 +93,7 @@
         <button class="btn" onclick="iniciar()">Iniciar</button>
         <button class="btn" onclick="pausar()">Pausa</button>
 
-        <!-- BOTÓN NUEVO AÑADIDO -->
+        <!-- BOTÓN NUEVO -->
         <button class="btn" onclick="window.location.href='explicacion_box.html'">
             Explicación
         </button>
@@ -114,62 +116,5 @@
         let ciclosCompletados = 0;
         let timeoutPaso;
 
-        function iniciar() {
-            if (activo) return;
-            activo = true;
-            pausado = false;
-            sonido.play();
-            siguientePaso();
-        }
-
-        function pausar() {
-            if (!activo) return;
-
-            if (!pausado) {
-                pausado = true;
-                sonido.pause();
-                texto.textContent = "Pausado";
-                clearTimeout(timeoutPaso);
-            } else {
-                pausado = false;
-                sonido.play();
-                siguientePaso();
-            }
-        }
-
-        function siguientePaso() {
-            if (pausado) return;
-
-            texto.textContent = ciclo[indice];
-            barra.style.backgroundColor = colores[indice];
-            barra.style.width = "0%";
-
-            let duracion = tiempos[indice];
-            let inicio = Date.now();
-
-            function animar() {
-                if (pausado) return;
-                let progreso = (Date.now() - inicio) / duracion;
-                if (progreso > 1) progreso = 1;
-                barra.style.width = (progreso * 100) + "%";
-                if (progreso < 1) requestAnimationFrame(animar);
-            }
-
-            animar();
-
-            timeoutPaso = setTimeout(() => {
-                indice = (indice + 1) % ciclo.length;
-
-                if (indice === 0) {
-                    ciclosCompletados++;
-                    contador.textContent = "Ciclos completados: " + ciclosCompletados;
-                }
-
-                siguientePaso();
-            }, duracion);
-        }
-    </script>
-
-</body>
-</html>
+        function
 
